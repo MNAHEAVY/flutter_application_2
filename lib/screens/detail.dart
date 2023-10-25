@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_application_2/screens/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -14,7 +15,7 @@ class CoinDetailScreen extends StatefulWidget {
 }
 
 class _CoinDetailScreenState extends State<CoinDetailScreen> {
-  late Coin coin;
+  Coin? coin; // Declare 'coin' as nullable
 
   @override
   void initState() {
@@ -47,40 +48,70 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unnecessary_null_comparison
     if (coin == null) {
       return Scaffold(
         appBar: AppBar(
           title: const Text(
             'Detalle de la moneda',
             style: TextStyle(
-              color: Colors.white, // Color del texto (blanco)
-              fontWeight: FontWeight.bold, // Texto en negrita
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          centerTitle: true, // Centra el título
-          backgroundColor:
-              Color.fromARGB(255, 42, 181, 155), // Color de fondo (azul)
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 42, 181, 155),
         ),
         body: const Center(
-          child: CircularProgressIndicator(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SpinKitChasingDots(
+                // Elige una animación de SpinKit
+                color: Colors.blue, // Color de la animación
+                size: 50.0, // Tamaño de la animación
+              ),
+              SizedBox(height: 16), // Espacio vertical
+              Text(
+                'Cargando datos...', // Un mensaje opcional
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Detalles de la Moneda'),
+          title: const Text(
+            'Detalle de la moneda',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 42, 181, 155),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Imagen de la moneda
-              Image.network(coin.image),
+              Image.network(
+                coin!.image ??
+                    'https://www.pngitem.com/pimgs/m/137-1378758_gold-coin-png-circle-transparent-png.png',
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.network(
+                      'https://www.pngitem.com/pimgs/m/137-1378758_gold-coin-png-circle-transparent-png.png');
+                },
+              ),
               // Nombre de la moneda
-              Text(coin.name, style: const TextStyle(fontSize: 20)),
+              Text(coin!.name, style: const TextStyle(fontSize: 20)),
               // Símbolo de la moneda
-              Text(coin.symbol,
+              Text(coin!.symbol,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold)),
             ],

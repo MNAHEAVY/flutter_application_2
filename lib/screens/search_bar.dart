@@ -3,17 +3,17 @@ import 'package:flutter_application_2/screens/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SearchBar extends StatefulWidget {
+class Search extends StatefulWidget {
   final Function(List<Coin>) onSearchResult;
 
-  const SearchBar({Key? key, required this.onSearchResult}) : super(key: key);
+  const Search({Key? key, required this.onSearchResult}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _SearchBarState createState() => _SearchBarState();
+  _SearchState createState() => _SearchState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _SearchState extends State<Search> {
   final TextEditingController _searchController = TextEditingController();
 
   void _searchCoins(String query) async {
