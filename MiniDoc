@@ -1,0 +1,459 @@
+// StatelessWidget
+// Un StatelessWidget representa un componente de la interfaz de usuario que no cambia su estado después de ser construido.
+// Es decir, su contenido es inmutable. Aquí tienes la estructura básica de un StatelessWidget:
+
+
+import 'package:flutter/material.dart';
+
+class MiWidget extends StatelessWidget {
+  final String texto;
+
+  MiWidget(this.texto);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(texto),
+    );
+  }
+}
+
+// MiWidget es una clase que extiende StatelessWidget.
+// texto es un parámetro que se pasa al widget cuando se crea.
+// El método build se debe implementar y devuelve la estructura del widget. En este caso, es un contenedor que contiene un texto.
+// StatefulWidget
+
+
+
+//StatefulWidget 
+// Un StatefulWidget representa un componente de la interfaz de usuario que puede cambiar su estado durante la vida de la aplicación. 
+// Aquí tienes la estructura básica de un StatefulWidget:
+
+import 'package:flutter/material.dart';
+
+class MiWidgetStateful extends StatefulWidget {
+  @override
+  _MiWidgetStatefulState createState() => _MiWidgetStatefulState();
+}
+
+class _MiWidgetStatefulState extends State<MiWidgetStateful> {
+  int contador = 0;
+
+  void incrementarContador() {
+    setState(() {
+      contador++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text('Contador: $contador'),
+          ElevatedButton(
+            onPressed: incrementarContador,
+            child: Text('Incrementar'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+// MiWidgetStateful es una clase que extiende StatefulWidget y debe proporcionar una instancia de _MiWidgetStatefulState.
+// _MiWidgetStatefulState es una clase que extiende State y contiene el estado mutable del widget.
+// El método build en _MiWidgetStatefulState devuelve la estructura del widget y puede acceder y modificar el estado a través de setState.
+
+
+// Ejemplos completos de cómo realizar solicitudes HTTP en Flutter, incluyendo GET, POST, PUT y DELETE. Utilizaremos el paquete http, que es comúnmente
+//  utilizado para realizar peticiones HTTP en Flutter. Asegúrate de agregar este paquete a tu archivo pubspec.yaml antes de utilizarlo. 
+//  Puedes hacerlo agregando la siguiente dependencia:
+
+yaml
+dependencies:
+  http: ^0.13.3
+
+// Asegúrate de ejecutar flutter pub get para obtener las dependencias después de agregarla.
+
+// Aquí tienes ejemplos de solicitudes HTTP asincrónicas con comentarios explicativos:
+
+// 1. Realizar una solicitud GET
+
+
+import 'dart:convert';
+import 'package:http/http.dart as http';
+
+Future<void> fetchAndPrintData() async {
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+  
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    print('Response data: $data');
+  } else {
+    print('Failed to fetch data. Status code: ${response.statusCode}');
+  }
+}
+
+// Llamar a la función
+fetchAndPrintData();
+
+
+
+// 2. Realizar una solicitud POST
+
+import 'dart:convert';
+import 'package:http/http.dart as http';
+
+Future<void> postData() async {
+  final Map<String, dynamic> data = {
+    'title': 'New Post',
+    'body': 'This is the body of the post',
+    'userId': 1,
+  };
+  
+  final response = await http.post(
+    Uri.parse('https://jsonplaceholder.typicode.com/posts'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(data),
+  );
+  
+  if (response.statusCode == 201) {
+    final createdPost = json.decode(response.body);
+    print('Created post: $createdPost');
+  } else {
+    print('Failed to create a new post. Status code: ${response.statusCode}');
+  }
+}
+
+// Llamar a la función
+postData();
+
+
+// 3. Realizar una solicitud PUT (Actualizar)
+
+
+import 'dart:convert';
+import 'package:http/http.dart as http';
+
+Future<void> updateData() async {
+  final Map<String, dynamic> data = {
+    'title': 'Updated Post',
+    'body': 'This is the updated body of the post',
+  };
+  
+  final response = await http.put(
+    Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(data),
+  );
+  
+  if (response.statusCode == 200) {
+    final updatedPost = json.decode(response.body);
+    print('Updated post: $updatedPost');
+  } else {
+    print('Failed to update the post. Status code: ${response.statusCode}');
+  }
+}
+
+// Llamar a la función
+updateData();
+
+
+// 4. Realizar una solicitud DELETE
+
+
+import 'package:http/http.dart as http';
+
+Future<void> deleteData() async {
+  final response = await http.delete(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+  
+  if (response.statusCode == 200) {
+    print('Post deleted successfully');
+  } else {
+    print('Failed to delete the post. Status code: ${response.statusCode}');
+  }
+}
+
+// Llamar a la función
+deleteData();
+
+
+// ESTADOS
+// Flutter:
+// Flutter Widgets:
+
+// En Flutter, los widgets son la unidad principal de la interfaz de usuario y de la lógica.
+// Los widgets pueden ser StatelessWidget (sin estado) o StatefulWidget (con estado).
+// Manejo de Estado Local:
+
+// Flutter promueve el manejo de estado local en el nivel del widget. Los StatefulWidget manejan su propio estado local.
+// Puedes utilizar SetState o StatefulWidget para actualizar el estado local de un widget.
+// Manejo de Estado Global:
+
+// Para el manejo de estado global, Flutter ofrece varias opciones como Provider, GetX, o el patrón Bloc.
+// Provider es ampliamente utilizado y permite la inyección de dependencias y el acceso a datos compartidos en toda la aplicación.
+// Acceso al Estado:
+
+// Los widgets pueden acceder al estado global utilizando el proveedor apropiado o las instancias de Bloc.
+// El acceso al estado se facilita mediante la inyección de dependencias en la jerarquía de widgets.
+// Actualización de Estado:
+
+// En Flutter, el estado se actualiza mediante notificaciones. Cuando el estado global cambia, los widgets interesados son notificados y se reconstruyen.
+// El estado se actualiza utilizando métodos y eventos proporcionados por las bibliotecas o patrones utilizados (por ejemplo, Provider.of, GetXController, o eventos de Bloc).
+
+// Estructura típica de una aplicación Flutter con Provider:
+// Directorio de Proveedores (Providers Directory): En tu proyecto, puedes crear un directorio específico para almacenar tus
+// clases de proveedores. Por ejemplo, puedes nombrarlo providers. En este directorio, crearás clases que extiendan ChangeNotifier para manejar el estado global.//
+// Configuración Inicial: En el archivo main.dart, puedes realizar la configuración inicial de tu aplicación, como la creación 
+// del MaterialApp, la definición de rutas, y la inicialización de tus proveedores. Esto se hace antes de ejecutar la aplicación.
+
+
+
+void main() {
+  runApp(MyApp());
+}
+Inicialización de Provider: En main.dart, puedes inicializar tus proveedores utilizando MultiProvider para agruparlos. Por ejemplo:
+dart
+Copy code
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => MyDataProvider()),
+        // Agrega más proveedores aquí si es necesario
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+// Consumir Proveedor: En tus widgets, puedes consumir los datos proporcionados por los proveedores utilizando Provider.of o Consumer. Por ejemplo:
+
+
+final myData = Provider.of<MyDataProvider>(context);
+
+// O utilizando Consumer
+Consumer<MyDataProvider>(
+  builder: (context, myData, child) {
+    // Usa myData aquí
+    return ...
+  },
+)
+//Actualizar el Estado: Cuando necesites actualizar el estado, puedes hacerlo dentro de tus clases de proveedores extendiendo ChangeNotifier y utilizando el método notifyListeners para notificar a los consumidores sobre el cambio.
+
+
+class MyDataProvider extends ChangeNotifier {
+  int _counter = 0;
+
+  int get counter => _counter;
+
+  void incrementCounter() {
+    _counter++;
+    notifyListeners(); // Notifica a los consumidores que el estado ha cambiado
+  }
+}
+// Acceso a Datos Compartidos: Puedes almacenar y acceder a datos compartidos, como autenticación, preferencias de usuario, datos de la aplicación, etc., en tus clases de proveedores. Luego, puedes acceder a estos datos desde cualquier widget que consuma el proveedor.
+
+
+// Estructura de la Navegación en Flutter:
+
+// MaterialApp: En tu aplicación Flutter, generalmente defines un MaterialApp como la raíz de tu aplicación. 
+// Este widget establece la apariencia básica de la aplicación y contiene la navegación. También es donde puedes definir tus rutas iniciales.
+// Navigator: El widget Navigator se utiliza para gestionar la pila de rutas (pantallas) en tu aplicación. 
+// Te permite navegar hacia adelante y hacia atrás entre las diferentes pantallas.
+// Rutas (Routes): Las rutas son los nombres que asignas a las diferentes pantallas de tu aplicación.
+//  Puedes definir rutas en la propiedad routes de MaterialApp o navegar utilizando el nombre de ruta directamente.
+
+// Manejo de Navegación en Flutter:
+// Push: Para navegar a una nueva pantalla, utilizas Navigator.push. Puedes pasar argumentos a la nueva pantalla si es necesario.
+
+// Pop: Para volver a la pantalla anterior, utilizas Navigator.pop. Esto elimina la pantalla actual de la pila de rutas.
+
+// Navegación con Nombre de Ruta: Puedes navegar a una pantalla por su nombre utilizando Navigator.pushNamed y definir rutas en la propiedad routes de MaterialApp.
+
+// Ejemplo Práctico de Navegación en Flutter:
+// A continuación, te proporcionaré un ejemplo práctico de cómo realizar la navegación en Flutter. 
+// Imagina que tienes una aplicación con dos pantallas: "Pantalla de Inicio" y "Pantalla de Detalles". Vamos a configurar la navegación entre estas dos pantallas.
+
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // Definir las rutas de navegación
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/details': (context) => DetailsScreen(),
+      },
+      initialRoute: '/', // Ruta inicial
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pantalla de Inicio'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Navegar a la Pantalla de Detalles
+            Navigator.pushNamed(context, '/details');
+          },
+          child: Text('Ir a Detalles'),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pantalla de Detalles'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Volver a la Pantalla de Inicio
+            Navigator.pop(context);
+          },
+          child: Text('Volver a Inicio'),
+        ),
+      ),
+    );
+  }
+}
+// En este ejemplo:
+
+// Definimos dos pantallas: HomeScreen y DetailsScreen.
+// Configuramos las rutas / (inicio) y /details en MaterialApp.
+// En HomeScreen, utilizamos Navigator.pushNamed para navegar a la pantalla de detalles.
+// En DetailsScreen, utilizamos Navigator.pop para volver a la pantalla de inicio.
+// Este es un ejemplo básico de navegación en Flutter. Puedes ampliarlo y personalizarlo según las necesidades de tu aplicación, agregando más pantallas y pasando datos entre ellas.
+// Puedes modularizar la estructura de navegación y separar la configuración de rutas en archivos independientes en lugar de hacerlo todo en main.dart. 
+// Modularizar tu código es una buena práctica que hace que tu código sea más organizado y mantenible, 
+// especialmente a medida que tu aplicación crece. Aquí hay un enfoque para modularizar la navegación en Flutter:
+// Crear un archivo de rutas (routes.dart): Puedes crear un archivo separado, por ejemplo, routes.dart, para definir tus rutas
+//  y configuraciones de navegación. En este archivo, puedes definir las rutas y sus correspondientes constructores de widgets.
+
+
+import 'package:flutter/material.dart';
+import 'package:mi_aplicacion/screens/home_screen.dart';
+import 'package:mi_aplicacion/screens/details_screen.dart';
+
+class AppRoutes {
+  static final initialRoute = '/';
+  
+  static final routes = {
+    initialRoute: (BuildContext context) => HomeScreen(),
+    '/details': (BuildContext context) => DetailsScreen(),
+  };
+}
+// Usar el archivo de rutas en main.dart: En tu archivo main.dart, puedes importar y usar las rutas definidas en routes.dart.
+
+
+import 'package:flutter/material.dart';
+import 'package:mi_aplicacion/routes.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: AppRoutes.routes,
+      initialRoute: AppRoutes.initialRoute,
+    );
+  }
+}
+
+// Organizar pantallas en módulos (carpetas): También puedes modularizar tu aplicación dividiendo tus pantallas en carpetas o módulos separados. 
+// Cada módulo puede contener sus propias pantallas, archivos de rutas, y lógica relacionada.
+// La modularización de tu código facilita la escalabilidad, la colaboración entre desarrolladores y la organización general de tu aplicación.
+//  Además, separa las preocupaciones, lo que hace que tu código 
+// sea más fácil de entender y mantener a medida que tu aplicación crece.
+// Este enfoque te permite mantener main.dart relativamente limpio y enfocado en la configuración inicial de tu aplicación,
+//  mientras que las rutas y las pantallas se organizan en archivos separados.
+
+
+// MAPEO DE OBJETOS
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class Producto {
+  final String nombre;
+  final String imagenURL;
+  final double precio;
+  final int stock;
+
+  Producto({
+    required this.nombre,
+    required this.imagenURL,
+    required this.precio,
+    required this.stock,
+  });
+}
+
+void main() {
+  runApp(MyApp());
+}
+
+class ListaDeProductos extends StatelessWidget {
+  final List<Producto> listaDeProductos = [
+    Producto(
+      nombre: 'Producto 1',
+      imagenURL: 'imagen1.jpg',
+      precio: 20.0,
+      stock: 10,
+    ),
+    Producto(
+      nombre: 'Producto 2',
+      imagenURL: 'imagen2.jpg',
+      precio: 25.0,
+      stock: 5,
+    ),
+    // Otros productos
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Lista de Productos'),
+        ),
+        body: ListView.builder(
+          itemCount: listaDeProductos.length,
+          itemBuilder: (context, index) {
+            final producto = listaDeProductos[index];
+            return ListTile(
+              leading: Image.network(producto.imagenURL),
+              title: Text(producto.nombre),
+              subtitle:
+                  Text('Precio: \$${producto.precio.toStringAsFixed(2)}, Stock: ${producto.stock} unidades'),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+En este ejemplo, tanto la lista de productos como la pantalla que muestra la lista se definen en el mismo archivo Dart. Ten en cuenta que este enfoque puede ser adecuado para ejemplos simples o aplicaciones pequeñas, pero en aplicaciones más grandes, es recomendable modularizar el código en archivos separados para una mejor organización y mantenimiento.
