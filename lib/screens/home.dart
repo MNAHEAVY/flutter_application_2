@@ -59,6 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           final coin = coins[index];
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(coin
+                  .imageUrl), // Reemplaza con la URL de la imagen de tu moneda
+            ),
             title: Text(coin.name),
             subtitle: Text(coin.symbol),
           );
