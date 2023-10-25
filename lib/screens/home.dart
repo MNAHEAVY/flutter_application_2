@@ -1,13 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/screens/detail.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_application_2/screens/search_bar.dart';
 
 class Coin {
   final String id;
   final String symbol;
   final String name;
+  final String image;
 
-  Coin({required this.id, required this.symbol, required this.name});
+  Coin({
+    required this.id,
+    required this.symbol,
+    required this.name,
+    required this.image,
+  });
 }
 
 class HomeScreen extends StatefulWidget {
@@ -34,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final List<dynamic> data = json.decode(response.body);
       final coinList = data.map((coinData) {
         return Coin(
+          image: coinData['image'],
           id: coinData['id'],
           symbol: coinData['symbol'],
           name: coinData['name'],
@@ -52,21 +61,48 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HeliCoins'),
+        title: const Text(
+          'HeliCoins',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Color.fromARGB(255, 42, 181, 155),
       ),
-      body: ListView.builder(
-        itemCount: coins.length,
-        itemBuilder: (context, index) {
-          final coin = coins[index];
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(coin
-                  .imageUrl), // Reemplaza con la URL de la imagen de tu moneda
+      body: Column(
+        children: [
+          SearchBar(onSearchResult: (searchResults) {
+            // Manejar los resultados de la búsqueda aquí
+          }),
+          Expanded(
+            child: ListView.builder(
+              itemCount: coins.length,
+              itemBuilder: (context, index) {
+                final coin = coins[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CoinDetailScreen(coinId: coin.id),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundImage: AssetImage(
+                          'assets/coin.png'), // Reemplaza con la URL de la imagen de tu moneda
+                    ),
+                    title: Text(coin.name),
+                    subtitle: Text(coin.symbol),
+                  ),
+                );
+              },
             ),
-            title: Text(coin.name),
-            subtitle: Text(coin.symbol),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
