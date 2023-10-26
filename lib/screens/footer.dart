@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/screens/nft.dart';
 
 class FooterWidget extends StatelessWidget {
   const FooterWidget({super.key});
@@ -29,7 +30,11 @@ class FooterWidget extends StatelessWidget {
             icon: const Icon(Icons.nfc),
             color: Colors.white,
             onPressed: () {
-              // Aquí puedes añadir la lógica para el botón de nft
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const NFTListView(),
+                ),
+              );
             },
           ),
         ],
