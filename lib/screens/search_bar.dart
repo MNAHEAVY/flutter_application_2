@@ -24,9 +24,9 @@ class _SearchState extends State<Search> {
       final data = json.decode(response.body);
       final coinList = (data['coins'] as List).map((coinData) {
         return Coin(
-            image: coinData['item']['large'],
-            name: coinData['item']['name'],
-            symbol: coinData['item']['symbol'],
+            image: coinData['image'],
+            name: coinData['name'],
+            symbol: coinData['symbol'],
             id: coinData['id']);
       }).toList();
 

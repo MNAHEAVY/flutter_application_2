@@ -78,11 +78,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 42, 181, 155),
+        backgroundColor: const Color.fromARGB(255, 42, 181, 155),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(
+              30), // Ajusta la altura del subtitulo según tus necesidades
+          child: Text(
+            'Tu app de criptos😎', // Cambia el texto del subtitulo
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+        ),
       ),
       body: Column(
         children: [
           Search(onSearchResult: updateSearchResults),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Cantidad de resultados: ${isSearching ? searchResults.length : coins.length}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (isSearching)
+                  ElevatedButton(
+                    onPressed: () {
+                      // Aquí puedes restablecer la búsqueda
+                      setState(() {
+                        isSearching = false;
+                      });
+                    },
+                    child: const Text('Restablecer'),
+                  ),
+              ],
+            ),
+          ),
           Expanded(
               child: ListView.builder(
             itemCount: isSearching ? searchResults.length : coins.length,
